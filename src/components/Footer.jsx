@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/blualien logo.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -8,8 +9,10 @@ const Footer = () => {
       <div className="container footer-container">
         <div className="footer-top">
           <div className="footer-brand">
-            <Link to="/" className="footer-logo">
-            <img src="/src/assets/blualien logo.png" alt="BLUALIEN" style={{ height: '60px'}} />BLUALIEN</Link>
+            <Link to="/" className="footer-logo" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <img src={logo} alt="BLUALIEN Logo" style={{ height: '44px', width: 'auto' }} />
+              <span>BLUALIEN</span>
+            </Link>
             <p className="footer-tagline heading-sm mt-4">Building what comes next.</p>
           </div>
           <div className="footer-links-grid">

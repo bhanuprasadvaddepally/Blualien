@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Search, Lightbulb, Settings, BarChart, Rocket, Box, Camera, User, Video, PenTool, Globe, Smartphone, Share2, TrendingUp, FlaskConical, Layers, Wrench, Code, Navigation } from 'lucide-react';
 import './Home.css';
 import WorkGrid from '../components/WorkGrid';
+import heroBg from '../assets/hero-bg.png';
 
 // Simple Reveal Component wrapper
 const Reveal = ({ children, className = '', delay = '' }) => {
@@ -46,7 +47,7 @@ const Home = () => {
           style={{
             position: 'absolute',
             top: 0, left: 0, right: 0, bottom: 0,
-            backgroundImage: 'url("/src/assets/hero-bg.png")',
+            backgroundImage: `url("${heroBg}")`,
             backgroundSize: "contain",
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

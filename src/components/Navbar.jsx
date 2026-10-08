@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import logo from '../assets/blualien logo.png';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -30,8 +31,9 @@ const Navbar = () => {
     <>
       <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="navbar-container">
-          <Link to="/" className="brand-logo">
-            <img src="/src/assets/blualien logo.png" alt="BLUALIEN" style={{ height: '60px' }} />
+          <Link to="/" className="brand-logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <img src={logo} alt="BLUALIEN Logo" style={{ height: '32px', width: 'auto' }} />
+            <span>BLUALIEN</span>
           </Link>
 
           <nav className="nav-desktop">
