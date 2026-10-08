@@ -77,7 +77,7 @@ Contact Form`;
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     const toEmail = process.env.CONTACT_EMAIL;
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `BLUALIEN System <${fromEmail}>`,
       to: [toEmail],
       subject: `New BLUALIEN Contact — ${cleanName}`,

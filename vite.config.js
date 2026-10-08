@@ -24,7 +24,7 @@ const vercelApiPlugin = () => {
             req.on('end', async () => {
               try {
                 req.body = JSON.parse(body);
-              } catch (e) {
+              } catch (_e) {
                 req.body = {};
               }
 

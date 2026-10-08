@@ -51,7 +51,7 @@ const Contact = () => {
           if (errData && errData.message) {
             errText = errData.message;
           }
-        } catch (e) {
+        } catch (_e) {
           if (response.status === 404) {
             errText = 'API endpoint not found. Ensure you are using the Vercel server.';
           }

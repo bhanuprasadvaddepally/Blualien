@@ -17,13 +17,14 @@ export function useReveal() {
       }
     );
 
-    if (ref.current) {
-      ref.current.classList.add('reveal-hidden');
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      currentRef.classList.add('reveal-hidden');
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (currentRef) observer.unobserve(currentRef);
     };
   }, []);
 
