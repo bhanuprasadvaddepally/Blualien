@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: blualien
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SITE_URL
+        value: https://blualien.com
+      - key: DATABASE_PATH
+        value: /var/data/blualien.sqlite
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CONTACT_TO_EMAIL
+        sync: false
+      - key: FROM_EMAIL
+        sync: false
+      - key: ANALYTICS_ID
+        sync: false
