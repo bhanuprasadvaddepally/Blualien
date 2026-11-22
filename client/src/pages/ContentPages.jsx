@@ -210,32 +210,34 @@ export function Studio() {
               return (
                 <article
                   key={col.title}
-                  className="group relative flex h-full flex-col justify-between overflow-hidden border border-ink bg-paper p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 before:absolute before:inset-x-0 before:top-0 before:h-1 before:origin-left before:scale-x-0 before:bg-lime before:transition-transform hover:before:scale-x-100"
+                  className="group/card relative flex h-full flex-col justify-between overflow-hidden border border-ink bg-paper p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 before:absolute before:inset-x-0 before:top-0 before:h-1 before:origin-left before:scale-x-0 before:bg-lime before:transition-transform hover:before:scale-x-100"
                 >
                   <div>
                     <h3 className="font-display text-3xl font-semibold tracking-[-0.04em] text-ink">
                       {col.title}
                     </h3>
                     <p className="mt-2 text-xs text-ink/70">{col.description}</p>
-                    <ul className="mt-6 space-y-3">
+                    <ul className="mt-6 space-y-1">
                       {visibleItems.map((item) => (
                         <li
                           key={item.name}
-                          className="flex items-center gap-3 border-t border-ink/15 pt-3 text-sm font-medium text-ink/85"
+                          className="hover-row-light flex items-center gap-3 border-t border-ink/15 px-2 py-2.5 text-sm font-medium text-ink/85"
                         >
-                          <ResolveIcon
-                            name={item.iconName}
-                            size={16}
-                            className="text-ink"
-                          />
-                          <span>{item.name}</span>
+                          <div className="hover-icon-box flex h-7 w-7 items-center justify-center border border-ink/20 bg-paper text-ink transition-colors duration-200">
+                            <ResolveIcon
+                              name={item.iconName}
+                              size={16}
+                              className="hover-icon-snap"
+                            />
+                          </div>
+                          <span className="text-ink">{item.name}</span>
                         </li>
                       ))}
                     </ul>
                     {hasMore && (
                       <button
                         type="button"
-                        className="mt-4 text-xs font-bold text-ink underline decoration-lime decoration-2 underline-offset-4 transition-colors hover:text-ink/70"
+                        className="hover-more-light mt-4 inline-block text-xs font-bold text-ink underline decoration-lime decoration-2 underline-offset-4 transition-colors hover:text-ink/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
                         onClick={() => toggleExpand(col.title)}
                         aria-expanded={isExpanded}
                       >
@@ -278,14 +280,18 @@ export function Studio() {
               {processSteps.map((step) => (
                 <li
                   key={step.number}
-                  className="relative flex h-full flex-col justify-between border border-paper/30 bg-ink p-5 transition-all duration-200 hover:-translate-y-1 hover:border-lime"
+                  className="group relative flex h-full flex-col justify-between border border-paper/30 bg-ink p-5 transition-all duration-200 hover:-translate-y-1 hover:border-lime"
                 >
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex h-8 w-8 items-center justify-center border border-lime bg-ink font-display text-sm font-bold text-lime">
+                      <span className="badge-snap inline-flex h-8 w-8 items-center justify-center border border-lime bg-ink font-display text-sm font-bold text-lime">
                         {step.number}
                       </span>
-                      <ResolveIcon name={step.iconName} size={22} className="text-lime" />
+                      <ResolveIcon
+                        name={step.iconName}
+                        size={22}
+                        className="hover-icon-snap text-lime"
+                      />
                     </div>
                     <h3 className="mt-4 font-display text-lg font-semibold tracking-tight text-paper">
                       {step.title}

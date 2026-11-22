@@ -75,7 +75,7 @@ function ResolveIcon({ name, size = 18, className = '' }) {
 function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [canParallax, setCanParallax] = useState(false);
-  const collageRef = useRef(null);
+  const panelRef = useRef(null);
 
   useEffect(() => {
     const isTouch = window.matchMedia('(hover: none)').matches;
@@ -86,8 +86,8 @@ function Hero() {
   }, []);
 
   function handleMouseMove(e) {
-    if (!canParallax || !collageRef.current) return;
-    const rect = collageRef.current.getBoundingClientRect();
+    if (!canParallax || !panelRef.current) return;
+    const rect = panelRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     // Normalize coordinates from -1 to 1, capped at 8px max movement
@@ -121,9 +121,16 @@ function Hero() {
     transition: { duration: 0.4, delay: delayIndex * 0.07, ease: 'easeOut' },
   });
 
+  // Logo entrance: 400ms duration, delayed by 150ms after the headline (0.07s + 0.15s = 0.22s)
+  const logoEntrance = {
+    initial: { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.4, delay: 0.22, ease: 'easeOut' },
+  };
+
   return (
     <section
-      className="relative flex min-h-[calc(100svh-5rem)] flex-col justify-center border-b border-ink/20 bg-paper px-5 py-5 sm:px-8 sm:py-6 lg:px-12 lg:py-8"
+      className="relative flex min-h-[calc(100svh-5rem)] flex-col justify-center border-b border-ink/20 bg-paper px-5 py-3.5 sm:px-8 sm:py-4 lg:px-12 lg:py-5"
       aria-labelledby="hero-heading"
     >
       <div className="mx-auto w-full max-w-7xl">
@@ -228,6 +235,31 @@ function Hero() {
               ))}
             </motion.ul>
 
+            {/* Mobile Logo Panel (sits below text block and above trust strip on <768px/mobile) */}
+            <motion.div
+              {...logoEntrance}
+              className="hero-logo-group relative my-6 flex w-[70%] max-w-[280px] h-[220px] mx-auto items-center justify-center lg:hidden"
+            >
+              <div className="relative h-full w-full">
+                {/* Solid Lime Rectangle offset 12px down and right */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 translate-x-3 translate-y-3 border border-ink bg-lime"
+                />
+                {/* Paper Panel */}
+                <div className="relative z-10 flex h-full w-full items-center justify-center border border-ink bg-paper p-4">
+                  <img
+                    src="/brand/blualien-logo-light.png"
+                    alt="Blualien logo"
+                    width="220"
+                    height="220"
+                    fetchPriority="high"
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
             {/* Trust Strip */}
             <motion.div
               {...fadeUp(6)}
@@ -249,99 +281,42 @@ function Hero() {
             </motion.div>
           </div>
 
-          {/* Right Column: Visual Collage of 3 Real Work Images with subtle parallax */}
-          <div
-            ref={collageRef}
+          {/* Right Column: Big Blualien Logo in framed paper panel with 20px lime offset block */}
+          <motion.div
+            {...logoEntrance}
+            ref={panelRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="relative mx-auto flex w-full max-w-md items-center justify-center lg:col-span-5"
+            className="hero-logo-group group relative mx-auto hidden w-full max-w-[400px] xl:max-w-[460px] items-center justify-center lg:flex lg:col-span-5"
           >
-            <div className="relative aspect-[4/5] w-full max-h-[58svh]">
-              {/* Back Card 1 - Drink Niro */}
+            <div
+              style={{
+                transform: canParallax
+                  ? `translate3d(${mousePos.x}px, ${mousePos.y}px, 0)`
+                  : undefined,
+                transition: 'transform 250ms ease-out',
+              }}
+              className="relative aspect-square w-full max-h-[54svh]"
+            >
+              {/* Solid Lime Rectangle behind panel: offset 20px down and right, shifts to 26px on hover */}
               <div
-                style={{
-                  transform: canParallax
-                    ? `translate3d(${mousePos.x * -0.6}px, ${mousePos.y * -0.6}px, 0)`
-                    : undefined,
-                  transition: 'transform 250ms ease-out',
-                }}
-                className="group absolute left-0 top-0 w-3/5 border border-ink bg-paper p-1.5 shadow-sm transition-all duration-250 hover:z-30 hover:-translate-y-1.5 hover:rotate-1 hover:shadow-md"
-              >
-                <div className="aspect-[3/4] w-full overflow-hidden bg-ink">
-                  <img
-                    src="/media/We asked ourselves one question...What if Niro had no creative limits@the.blualien @nirobrothers.jpg"
-                    alt="Drink Niro campaign work by Blualien"
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="eager"
-                    width="400"
-                    height="533"
-                  />
-                </div>
-                <div className="flex items-center justify-between border-t border-ink/10 px-2 py-1 text-[0.65rem] font-bold">
-                  <span className="text-ink">Drink Niro</span>
-                  <span className="bg-lime px-1.5 py-0.5 text-[0.6rem] text-ink font-bold">
-                    Creative
-                  </span>
-                </div>
-              </div>
+                aria-hidden="true"
+                className="hero-lime-block absolute inset-0 translate-x-5 translate-y-5 border border-ink bg-lime transition-transform duration-300 ease-out"
+              />
 
-              {/* Back Card 2 - One8 */}
-              <div
-                style={{
-                  transform: canParallax
-                    ? `translate3d(${mousePos.x * 0.5}px, ${mousePos.y * -0.5}px, 0)`
-                    : undefined,
-                  transition: 'transform 250ms ease-out',
-                }}
-                className="group absolute bottom-2 left-4 w-3/5 border border-ink bg-paper p-1.5 shadow-sm transition-all duration-250 hover:z-30 hover:-translate-y-1.5 hover:rotate-1 hover:shadow-md"
-              >
-                <div className="aspect-[3/4] w-full overflow-hidden bg-ink">
-                  <img
-                    src="/media/We didnt want to make another ad for sneakers.We wanted to build something people would rememb.heic.jpg"
-                    alt="One8 fashion campaign work by Blualien"
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                    width="400"
-                    height="533"
-                  />
-                </div>
-                <div className="flex items-center justify-between border-t border-ink/10 px-2 py-1 text-[0.65rem] font-bold">
-                  <span className="text-ink">One8</span>
-                  <span className="bg-lime px-1.5 py-0.5 text-[0.6rem] text-ink font-bold">
-                    Campaign
-                  </span>
-                </div>
-              </div>
-
-              {/* Front Card 3 - VOID Energy */}
-              <div
-                style={{
-                  transform: canParallax
-                    ? `translate3d(${mousePos.x * 0.9}px, ${mousePos.y * 0.9}px, 0)`
-                    : undefined,
-                  transition: 'transform 250ms ease-out',
-                }}
-                className="group absolute right-0 top-10 z-10 w-3/5 border border-ink bg-paper p-2 shadow-md transition-all duration-250 hover:z-30 hover:-translate-y-1.5 hover:rotate-1 hover:shadow-lg"
-              >
-                <div className="aspect-[3/4] w-full overflow-hidden bg-ink">
-                  <img
-                    src="/media/What happens when energy meets imagination. BlueAlien × VOID Energy DrinkWe reimagined the produ.jpg"
-                    alt="VOID Energy Drink campaign work by Blualien"
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="eager"
-                    width="400"
-                    height="533"
-                  />
-                </div>
-                <div className="flex items-center justify-between border-t border-ink/10 px-2 py-1.5 text-[0.7rem] font-bold">
-                  <span className="text-ink">VOID Energy</span>
-                  <span className="bg-lime px-1.5 py-0.5 text-[0.6rem] text-ink font-bold">
-                    Beverage
-                  </span>
-                </div>
+              {/* Paper Panel with 1px ink border */}
+              <div className="hero-logo-panel relative z-10 flex h-full w-full items-center justify-center border border-ink bg-paper p-5 sm:p-6 lg:p-8 transition-transform duration-300 ease-out">
+                <img
+                  src="/brand/blualien-logo.png"
+                  alt="Blualien logo"
+                  width="560"
+                  height="560"
+                  fetchPriority="high"
+                  className="hero-logo-img h-full w-full object-contain transition-transform duration-300 ease-out"
+                />
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -375,10 +350,12 @@ function Ecosystem() {
       <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-4">
         {/* 1. PRODUCTS */}
         <Reveal>
-          <article className="flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
+          <article className="group/card flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
             <div>
               <div className="flex items-start justify-between border-b border-paper/20 pb-4">
-                <span className="font-display text-2xl font-semibold text-lime">01</span>
+                <span className="badge-snap font-display text-2xl font-semibold text-lime">
+                  01
+                </span>
                 <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-paper">
                   PRODUCTS
                 </h3>
@@ -386,14 +363,20 @@ function Ecosystem() {
               <p className="mt-4 text-sm leading-6 text-paper/80">
                 AI-native products solving real problems.
               </p>
-              <div className="mt-6 border border-paper/20 p-4">
-                <Box aria-hidden="true" className="text-lime" size={24} />
-                <h4 className="mt-3 font-bold text-paper">ALINET</h4>
+              {/* Inner Box: ALINET */}
+              <Link
+                to="/products"
+                className="hover-box-dark focus-lime mt-6 block border border-paper/20 p-4"
+              >
+                <Box aria-hidden="true" className="hover-icon-snap text-lime" size={24} />
+                <h4 className="hover-box-title mt-3 font-bold text-paper transition-colors duration-150">
+                  ALINET
+                </h4>
                 <p className="mt-2 text-xs leading-5 text-paper/75">
                   [Add one-line ALINET description] Work-first professional identity and
                   reputation built around actual creative proof.
                 </p>
-              </div>
+              </Link>
             </div>
             <Link
               to="/products"
@@ -406,10 +389,12 @@ function Ecosystem() {
 
         {/* 2. STUDIO */}
         <Reveal delay={0.05}>
-          <article className="flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
+          <article className="group/card flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
             <div>
               <div className="flex items-start justify-between border-b border-paper/20 pb-4">
-                <span className="font-display text-2xl font-semibold text-lime">02</span>
+                <span className="badge-snap font-display text-2xl font-semibold text-lime">
+                  02
+                </span>
                 <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-paper">
                   STUDIO
                 </h3>
@@ -417,16 +402,16 @@ function Ecosystem() {
               <p className="mt-4 text-sm leading-6 text-paper/80">
                 AI-native creative and growth systems for companies.
               </p>
-              <ul className="mt-6 space-y-2.5 text-xs text-paper/80">
+              <ul className="mt-6 space-y-1 text-xs text-paper/80">
                 {pillarsData[1].primaryServices.map((service) => (
                   <li
-                    className="flex items-center gap-2 border-t border-paper/10 pt-2"
+                    className="hover-row-dark flex items-center gap-2 border-t border-paper/10 px-2 py-2"
                     key={service.name}
                   >
                     <ResolveIcon
                       name={service.iconName}
                       size={15}
-                      className="text-lime"
+                      className="hover-icon-snap text-lime"
                     />
                     <span>{service.name}</span>
                   </li>
@@ -434,13 +419,13 @@ function Ecosystem() {
                 {studioExpanded &&
                   pillarsData[1].expandedServices.map((service) => (
                     <li
-                      className="flex items-center gap-2 border-t border-paper/10 pt-2"
+                      className="hover-row-dark flex items-center gap-2 border-t border-paper/10 px-2 py-2"
                       key={service.name}
                     >
                       <ResolveIcon
                         name={service.iconName}
                         size={15}
-                        className="text-lime"
+                        className="hover-icon-snap text-lime"
                       />
                       <span>{service.name}</span>
                     </li>
@@ -449,7 +434,7 @@ function Ecosystem() {
               {!studioExpanded ? (
                 <button
                   type="button"
-                  className="mt-4 text-xs font-bold text-lime underline hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+                  className="hover-more-dark focus-lime mt-4 inline-block text-xs font-bold text-lime underline hover:text-paper"
                   onClick={() => setStudioExpanded(true)}
                   aria-label="Show 5 more studio services"
                 >
@@ -458,7 +443,7 @@ function Ecosystem() {
               ) : (
                 <button
                   type="button"
-                  className="mt-4 text-xs font-bold text-paper/60 underline hover:text-paper"
+                  className="hover-more-dark focus-lime mt-4 inline-block text-xs font-bold text-paper/60 underline hover:text-paper"
                   onClick={() => setStudioExpanded(false)}
                 >
                   Show less
@@ -476,10 +461,12 @@ function Ecosystem() {
 
         {/* 3. DISTRIBUTION */}
         <Reveal delay={0.1}>
-          <article className="flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
+          <article className="group/card flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
             <div>
               <div className="flex items-start justify-between border-b border-paper/20 pb-4">
-                <span className="font-display text-2xl font-semibold text-lime">03</span>
+                <span className="badge-snap font-display text-2xl font-semibold text-lime">
+                  03
+                </span>
                 <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-paper">
                   DISTRIBUTION
                 </h3>
@@ -488,28 +475,45 @@ function Ecosystem() {
                 Media built around ideas worth knowing.
               </p>
               <div className="mt-6 space-y-3">
-                {pillarsData[2].channels.map((ch) => (
-                  <div key={ch.name} className="border border-paper/20 p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <ResolveIcon name={ch.iconName} size={16} className="text-lime" />
-                        <h4 className="text-xs font-bold text-paper">{ch.name}</h4>
+                {pillarsData[2].channels.map((ch) => {
+                  const isLink = ch.url && ch.url !== '#';
+                  const BoxTag = isLink ? 'a' : 'div';
+                  const linkProps = isLink
+                    ? {
+                        href: ch.url,
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        'aria-label': `Visit ${ch.name}`,
+                      }
+                    : {};
+
+                  return (
+                    <BoxTag
+                      key={ch.name}
+                      {...linkProps}
+                      className="hover-box-dark focus-lime block border border-paper/20 p-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <ResolveIcon
+                            name={ch.iconName}
+                            size={16}
+                            className="hover-icon-snap text-lime"
+                          />
+                          <h4 className="hover-box-title text-xs font-bold text-paper transition-colors duration-150">
+                            {ch.name}
+                          </h4>
+                        </div>
+                        {isLink && (
+                          <span className="hover-box-arrow inline-block text-[0.65rem] font-bold text-lime transition-transform duration-150">
+                            Visit →
+                          </span>
+                        )}
                       </div>
-                      {ch.url && ch.url !== '#' && (
-                        <a
-                          href={ch.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[0.65rem] font-bold text-lime hover:underline"
-                          aria-label={`Visit ${ch.name}`}
-                        >
-                          Visit →
-                        </a>
-                      )}
-                    </div>
-                    <p className="mt-1 text-[0.7rem] text-paper/70">{ch.niche}</p>
-                  </div>
-                ))}
+                      <p className="mt-1 text-[0.7rem] text-paper/70">{ch.niche}</p>
+                    </BoxTag>
+                  );
+                })}
               </div>
             </div>
             <Link
@@ -523,10 +527,12 @@ function Ecosystem() {
 
         {/* 4. LABS */}
         <Reveal delay={0.15}>
-          <article className="flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
+          <article className="group/card flex h-full flex-col justify-between border border-paper/30 bg-ink p-6 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
             <div>
               <div className="flex items-start justify-between border-b border-paper/20 pb-4">
-                <span className="font-display text-2xl font-semibold text-lime">04</span>
+                <span className="badge-snap font-display text-2xl font-semibold text-lime">
+                  04
+                </span>
                 <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-paper">
                   LABS
                 </h3>
@@ -534,23 +540,31 @@ function Ecosystem() {
               <p className="mt-4 text-sm leading-6 text-paper/80">
                 Experiments, prototypes and things Blualien is exploring.
               </p>
-              <ul className="mt-6 space-y-2.5 text-xs text-paper/80">
+              <ul className="mt-6 space-y-1 text-xs text-paper/80">
                 {pillarsData[3].primaryItems.map((item) => (
                   <li
-                    className="flex items-center gap-2 border-t border-paper/10 pt-2"
+                    className="hover-row-dark flex items-center gap-2 border-t border-paper/10 px-2 py-2"
                     key={item.name}
                   >
-                    <ResolveIcon name={item.iconName} size={15} className="text-lime" />
+                    <ResolveIcon
+                      name={item.iconName}
+                      size={15}
+                      className="hover-icon-snap text-lime"
+                    />
                     <span>{item.name}</span>
                   </li>
                 ))}
                 {labsExpanded &&
                   pillarsData[3].expandedItems.map((item) => (
                     <li
-                      className="flex items-center gap-2 border-t border-paper/10 pt-2"
+                      className="hover-row-dark flex items-center gap-2 border-t border-paper/10 px-2 py-2"
                       key={item.name}
                     >
-                      <ResolveIcon name={item.iconName} size={15} className="text-lime" />
+                      <ResolveIcon
+                        name={item.iconName}
+                        size={15}
+                        className="hover-icon-snap text-lime"
+                      />
                       <span>{item.name}</span>
                     </li>
                   ))}
@@ -558,7 +572,7 @@ function Ecosystem() {
               {!labsExpanded ? (
                 <button
                   type="button"
-                  className="mt-4 text-xs font-bold text-lime underline hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+                  className="hover-more-dark focus-lime mt-4 inline-block text-xs font-bold text-lime underline hover:text-paper"
                   onClick={() => setLabsExpanded(true)}
                   aria-label="Show 2 more labs items"
                 >
@@ -567,7 +581,7 @@ function Ecosystem() {
               ) : (
                 <button
                   type="button"
-                  className="mt-4 text-xs font-bold text-paper/60 underline hover:text-paper"
+                  className="hover-more-dark focus-lime mt-4 inline-block text-xs font-bold text-paper/60 underline hover:text-paper"
                   onClick={() => setLabsExpanded(false)}
                 >
                   Show less
@@ -621,31 +635,33 @@ function Studio() {
 
           return (
             <Reveal delay={index * 0.05} key={col.title}>
-              <article className="group relative flex h-full flex-col justify-between overflow-hidden border border-ink bg-paper p-6 transition-all duration-200 hover:-translate-y-1 before:absolute before:inset-x-0 before:top-0 before:h-1 before:origin-left before:scale-x-0 before:bg-lime before:transition-transform hover:before:scale-x-100">
+              <article className="group/card relative flex h-full flex-col justify-between overflow-hidden border border-ink bg-paper p-6 transition-all duration-200 hover:-translate-y-1 before:absolute before:inset-x-0 before:top-0 before:h-1 before:origin-left before:scale-x-0 before:bg-lime before:transition-transform hover:before:scale-x-100">
                 <div>
                   <h3 className="font-display text-3xl font-semibold tracking-[-0.04em] text-ink">
                     {col.title}
                   </h3>
                   <p className="mt-2 text-xs text-ink/70">{col.description}</p>
-                  <ul className="mt-6 space-y-3">
+                  <ul className="mt-6 space-y-1">
                     {visibleItems.map((item) => (
                       <li
                         key={item.name}
-                        className="flex items-center gap-3 border-t border-ink/15 pt-3 text-sm font-medium text-ink/85"
+                        className="hover-row-light flex items-center gap-3 border-t border-ink/15 px-2 py-2.5 text-sm font-medium text-ink/85"
                       >
-                        <ResolveIcon
-                          name={item.iconName}
-                          size={16}
-                          className="text-ink"
-                        />
-                        <span>{item.name}</span>
+                        <div className="hover-icon-box flex h-7 w-7 items-center justify-center border border-ink/20 bg-paper text-ink transition-colors duration-200">
+                          <ResolveIcon
+                            name={item.iconName}
+                            size={16}
+                            className="hover-icon-snap"
+                          />
+                        </div>
+                        <span className="text-ink">{item.name}</span>
                       </li>
                     ))}
                   </ul>
                   {hasMore && (
                     <button
                       type="button"
-                      className="mt-4 text-xs font-bold text-ink underline decoration-lime decoration-2 underline-offset-4 transition-colors hover:text-ink/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
+                      className="hover-more-light mt-4 inline-block text-xs font-bold text-ink underline decoration-lime decoration-2 underline-offset-4 transition-colors hover:text-ink/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
                       onClick={() => toggleExpand(col.title)}
                       aria-expanded={isExpanded}
                     >
@@ -698,13 +714,17 @@ function Process() {
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {processSteps.map((step, index) => (
             <Reveal delay={index * 0.05} key={step.number}>
-              <li className="relative flex h-full flex-col justify-between border border-paper/30 bg-ink p-5 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
+              <li className="group relative flex h-full flex-col justify-between border border-paper/30 bg-ink p-5 transition-all duration-200 hover:-translate-y-1 hover:border-lime">
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex h-8 w-8 items-center justify-center border border-lime bg-ink font-display text-sm font-bold text-lime">
+                    <span className="badge-snap inline-flex h-8 w-8 items-center justify-center border border-lime bg-ink font-display text-sm font-bold text-lime">
                       {step.number}
                     </span>
-                    <ResolveIcon name={step.iconName} size={24} className="text-lime" />
+                    <ResolveIcon
+                      name={step.iconName}
+                      size={24}
+                      className="hover-icon-snap text-lime"
+                    />
                   </div>
                   <h3 className="mt-5 font-display text-xl font-semibold leading-snug tracking-[-0.03em] text-paper">
                     {step.title}
@@ -746,21 +766,27 @@ function BuildWithUs() {
       <div className="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4">
         {audienceCards.map((card, index) => (
           <Reveal delay={index * 0.05} key={card.title}>
-            <article className="group relative flex h-full flex-col justify-between overflow-hidden border border-ink bg-paper p-6 transition-all duration-200 hover:-translate-y-1 before:absolute before:inset-x-0 before:top-0 before:h-1 before:origin-left before:scale-x-0 before:bg-lime before:transition-transform hover:before:scale-x-100">
+            <article className="group/card relative flex h-full flex-col justify-between overflow-hidden border border-ink bg-paper p-6 transition-all duration-200 hover:-translate-y-1 before:absolute before:inset-x-0 before:top-0 before:h-1 before:origin-left before:scale-x-0 before:bg-lime before:transition-transform hover:before:scale-x-100">
               <div>
                 <div className="flex items-center justify-between border-b border-ink/15 pb-4">
-                  <span className="inline-flex h-7 w-7 items-center justify-center bg-lime font-display text-xs font-bold text-ink">
+                  <span className="badge-snap inline-flex h-7 w-7 items-center justify-center bg-lime font-display text-xs font-bold text-ink border border-ink">
                     {card.number}
                   </span>
-                  <div className="flex h-10 w-10 items-center justify-center border border-ink/30 bg-paper text-ink">
-                    <ResolveIcon name={card.iconName} size={20} />
+                  <div className="hover-icon-box flex h-10 w-10 items-center justify-center border border-ink/30 bg-paper text-ink">
+                    <ResolveIcon
+                      name={card.iconName}
+                      size={20}
+                      className="hover-icon-snap"
+                    />
                   </div>
                 </div>
 
                 <h3 className="mt-6 font-display text-2xl font-semibold tracking-[-0.04em] text-ink">
                   {card.title}
                 </h3>
-                <h4 className="mt-1 text-xs font-bold text-ink/80">{card.subtitle}</h4>
+                <h4 className="mt-1 text-xs font-bold text-ink/80">
+                  <span className="sweep-subtitle px-1 -mx-1">{card.subtitle}</span>
+                </h4>
                 <p className="mt-3 text-xs leading-5 text-ink/75">{card.description}</p>
               </div>
 
@@ -773,7 +799,7 @@ function BuildWithUs() {
                   <ArrowRight
                     aria-hidden="true"
                     size={14}
-                    className="transition-transform duration-150 group-hover:translate-x-1"
+                    className="transition-transform duration-150 group-hover/card:translate-x-1"
                   />
                 </Link>
               </div>

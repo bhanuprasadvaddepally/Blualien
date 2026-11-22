@@ -48,6 +48,13 @@ a {
   box-shadow: 0 0 0 4px #c6f432;
 }
 
+/* Light / dark section focus-visible variants */
+.focus-lime:focus-visible {
+  outline: 2px solid #c6f432 !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #0e1030 !important;
+}
+
 .skip-link {
   position: fixed;
   top: 0.75rem;
@@ -65,6 +72,208 @@ a {
   transform: translateY(0);
 }
 
+/* =========================================================================
+   INNER INTERACTION & HOVER UTILITIES
+   Respects @media (hover: hover) and prefers-reduced-motion
+========================================================================= */
+
+@media (hover: hover) {
+  /* A. Dark-section inner boxes (ALINET, Distribution channels, Next Steps) */
+  .hover-box-dark {
+    transition:
+      border-color 0.2s ease-out,
+      background-color 0.2s ease-out,
+      transform 0.2s ease-out;
+  }
+  .hover-box-dark:hover,
+  .hover-box-dark:focus-visible {
+    border-color: #c6f432 !important;
+    background-color: rgba(246, 245, 241, 0.06) !important;
+    transform: translateY(-2px);
+  }
+  .hover-box-dark:hover .hover-box-title,
+  .hover-box-dark:focus-visible .hover-box-title {
+    color: #c6f432 !important;
+  }
+  .hover-box-dark:hover .hover-box-arrow,
+  .hover-box-dark:focus-visible .hover-box-arrow {
+    transform: translateX(4px);
+    color: #c6f432 !important;
+  }
+  .hover-box-dark:hover .hover-icon-snap,
+  .hover-box-dark:focus-visible .hover-icon-snap {
+    transform: scale(1.1) rotate(6deg);
+  }
+
+  /* B. Dark-section list rows divided by lines */
+  .hover-row-dark {
+    position: relative;
+    cursor: default;
+    transition:
+      border-color 0.2s ease-out,
+      background-color 0.2s ease-out,
+      color 0.2s ease-out,
+      transform 0.2s ease-out;
+  }
+  .hover-row-dark::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: #c6f432;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.2s ease-out;
+  }
+  .hover-row-dark:hover {
+    border-color: #c6f432 !important;
+    background-color: rgba(246, 245, 241, 0.05) !important;
+    color: #c6f432 !important;
+    transform: translateX(6px);
+  }
+  .hover-row-dark:hover::before {
+    transform: scaleY(1);
+  }
+  .hover-row-dark:hover .hover-icon-snap {
+    transform: scale(1.1) rotate(6deg);
+  }
+
+  /* "+ N more" dark link */
+  .hover-more-dark {
+    transition:
+      transform 0.2s ease-out,
+      color 0.2s ease-out,
+      text-decoration-thickness 0.2s ease-out;
+  }
+  .hover-more-dark:hover {
+    text-decoration-thickness: 2px !important;
+    transform: translateX(3px);
+    color: #c6f432 !important;
+  }
+
+  /* C. Light-section rows divided by lines */
+  .hover-row-light {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    cursor: default;
+    transition:
+      border-color 0.2s ease-out,
+      transform 0.2s ease-out;
+  }
+  .hover-row-light::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: #c6f432;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease-out;
+  }
+  .hover-row-light:hover {
+    border-color: #0e1030 !important;
+    transform: translateX(6px);
+  }
+  .hover-row-light:hover::before {
+    transform: scaleX(1);
+  }
+  .hover-row-light:hover .hover-icon-box {
+    border-color: #0e1030 !important;
+    background-color: #c6f432 !important;
+  }
+  .hover-row-light:hover .hover-icon-snap {
+    transform: scale(1.1) rotate(6deg);
+  }
+
+  /* "+ N more" light link */
+  .hover-more-light {
+    transition:
+      transform 0.2s ease-out,
+      text-decoration-thickness 0.2s ease-out;
+  }
+  .hover-more-light:hover {
+    text-decoration-thickness: 6px !important;
+    transform: translateX(3px);
+  }
+
+  /* D. Badges & Icons */
+  .badge-snap {
+    transition:
+      background-color 0.2s ease-out,
+      color 0.2s ease-out,
+      border-color 0.2s ease-out;
+  }
+  .group:hover .badge-snap,
+  .group\/card:hover .badge-snap {
+    background-color: #c6f432 !important;
+    color: #0e1030 !important;
+    border-color: #c6f432 !important;
+  }
+
+  .hover-icon-snap {
+    display: inline-block;
+    transition: transform 0.2s ease-out;
+  }
+  .group:hover .hover-icon-snap,
+  .group\/card:hover .hover-icon-snap {
+    transform: scale(1.1) rotate(6deg);
+  }
+
+  .hover-icon-box {
+    transition:
+      background-color 0.2s ease-out,
+      border-color 0.2s ease-out,
+      color 0.2s ease-out;
+  }
+  .group:hover .hover-icon-box,
+  .group\/card:hover .hover-icon-box {
+    background-color: #c6f432 !important;
+    border-color: #0e1030 !important;
+    color: #0e1030 !important;
+  }
+
+  /* Subtitle sweeping highlight behind text */
+  .sweep-subtitle {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+  }
+  .sweep-subtitle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: #c6f432;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease-out;
+  }
+  .group:hover .sweep-subtitle::before,
+  .group\/card:hover .sweep-subtitle::before {
+    transform: scaleX(1);
+  }
+
+  /* Hero logo panel interactions */
+  .hero-logo-panel {
+    transition: transform 0.3s ease-out;
+  }
+  .hero-lime-block {
+    transition: transform 0.3s ease-out;
+  }
+  .hero-logo-img {
+    transition: transform 0.3s ease-out;
+  }
+  .hero-logo-group:hover .hero-logo-img {
+    transform: scale(1.04);
+  }
+  .hero-logo-group:hover .hero-lime-block {
+    transform: translate(26px, 26px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -76,5 +285,22 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .hover-box-dark,
+  .hover-box-dark:hover,
+  .hover-row-dark,
+  .hover-row-dark:hover,
+  .hover-row-light,
+  .hover-row-light:hover,
+  .hover-more-dark:hover,
+  .hover-more-light:hover,
+  .hover-icon-snap,
+  .group:hover .hover-icon-snap,
+  .group\/card:hover .hover-icon-snap,
+  .hover-box-dark:hover .hover-box-arrow,
+  .hero-logo-group:hover .hero-logo-img,
+  .hero-logo-group:hover .hero-lime-block {
+    transform: none !important;
   }
 }

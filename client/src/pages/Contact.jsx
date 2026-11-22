@@ -62,27 +62,29 @@ export default function Contact() {
                         key={card.sector}
                         type="button"
                         onClick={() => handleSelectSector(card.sector)}
-                        className={`group relative flex flex-col justify-between overflow-hidden border p-3.5 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink ${
+                        className={`group/card relative flex flex-col justify-between overflow-hidden border p-3.5 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink ${
                           isSelected
                             ? 'border-ink bg-lime/10 ring-2 ring-lime before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-lime'
                             : 'border-ink/25 bg-paper hover:border-ink hover:bg-ink/5'
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-[0.65rem] font-bold uppercase tracking-wider text-ink/60">
+                          <span className="badge-snap text-[0.65rem] font-bold uppercase tracking-wider text-ink/60">
                             {card.number}
                           </span>
-                          <IconComponent
-                            size={16}
-                            className={isSelected ? 'text-ink font-bold' : 'text-ink/75'}
-                          />
+                          <div className="hover-icon-box flex h-6 w-6 items-center justify-center transition-colors duration-200">
+                            <IconComponent
+                              size={16}
+                              className={`hover-icon-snap ${isSelected ? 'text-ink font-bold' : 'text-ink/75'}`}
+                            />
+                          </div>
                         </div>
                         <div className="mt-3">
                           <span className="block font-display text-sm font-bold text-ink">
                             {card.title}
                           </span>
                           <span className="mt-0.5 block text-[0.65rem] text-ink/65 leading-tight">
-                            {card.subtitle}
+                            <span className="sweep-subtitle px-0.5">{card.subtitle}</span>
                           </span>
                         </div>
                       </button>
@@ -134,9 +136,11 @@ export default function Contact() {
             WHAT HAPPENS NEXT
           </p>
           <div className="mt-6 grid gap-6 sm:grid-cols-3">
-            <div className="border border-paper/20 p-5">
-              <span className="font-display text-xl font-bold text-lime">01</span>
-              <h3 className="mt-2 font-display text-lg font-bold text-paper">
+            <div className="hover-box-dark border border-paper/20 p-5 cursor-default">
+              <span className="badge-snap font-display text-xl font-bold text-lime">
+                01
+              </span>
+              <h3 className="hover-box-title mt-2 font-display text-lg font-bold text-paper transition-colors duration-150">
                 Direct Evaluation
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-paper/75">
@@ -144,9 +148,11 @@ export default function Contact() {
                 scope feasibility.
               </p>
             </div>
-            <div className="border border-paper/20 p-5">
-              <span className="font-display text-xl font-bold text-lime">02</span>
-              <h3 className="mt-2 font-display text-lg font-bold text-paper">
+            <div className="hover-box-dark border border-paper/20 p-5 cursor-default">
+              <span className="badge-snap font-display text-xl font-bold text-lime">
+                02
+              </span>
+              <h3 className="hover-box-title mt-2 font-display text-lg font-bold text-paper transition-colors duration-150">
                 Alignment & Plan
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-paper/75">
@@ -154,9 +160,11 @@ export default function Contact() {
                 workflows, and milestone timelines.
               </p>
             </div>
-            <div className="border border-paper/20 p-5">
-              <span className="font-display text-xl font-bold text-lime">03</span>
-              <h3 className="mt-2 font-display text-lg font-bold text-paper">
+            <div className="hover-box-dark border border-paper/20 p-5 cursor-default">
+              <span className="badge-snap font-display text-xl font-bold text-lime">
+                03
+              </span>
+              <h3 className="hover-box-title mt-2 font-display text-lg font-bold text-paper transition-colors duration-150">
                 Sprint Execution
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-paper/75">
