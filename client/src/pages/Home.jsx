@@ -72,6 +72,9 @@ function ResolveIcon({ name, size = 18, className = '' }) {
   return <Component aria-hidden="true" size={size} className={className} />;
 }
 
+// Single source of truth for the Hero logo (used by both mobile and desktop panels)
+const HERO_LOGO_SRC = '/brand/recolored_1a5fff.png';
+
 function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [canParallax, setCanParallax] = useState(false);
@@ -249,7 +252,7 @@ function Hero() {
                 {/* Paper Panel */}
                 <div className="relative z-10 flex h-full w-full items-center justify-center border border-ink bg-paper p-4">
                   <img
-                    src="/brand/blualien-logo-light.png"
+                    src={HERO_LOGO_SRC}
                     alt="Blualien logo"
                     width="220"
                     height="220"
@@ -307,7 +310,7 @@ function Hero() {
               {/* Paper Panel with 1px ink border */}
               <div className="hero-logo-panel relative z-10 flex h-full w-full items-center justify-center border border-ink bg-paper p-5 sm:p-6 lg:p-8 transition-transform duration-300 ease-out">
                 <img
-                  src="/brand/blualien-logo.png"
+                  src={HERO_LOGO_SRC}
                   alt="Blualien logo"
                   width="560"
                   height="560"

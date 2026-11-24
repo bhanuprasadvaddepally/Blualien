@@ -63,7 +63,7 @@ export default function Navbar() {
           aria-label="Blualien Home"
         >
           <img
-            src="/brand/blualien-logo.png"
+            src="/brand/recolored_1a5fff.png"
             alt="Blualien"
             width="32"
             height="38"
@@ -86,9 +86,8 @@ export default function Navbar() {
                 key={to}
                 to={to}
                 aria-current={isActive ? 'page' : undefined}
-                className={`relative py-1 text-sm font-semibold text-ink transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-lime after:transition-all after:duration-200 ${
-                  isActive ? 'after:w-full' : 'after:w-0 hover:after:w-full'
-                }`}
+                className={`relative py-1 text-sm font-semibold text-ink transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-lime after:transition-all after:duration-200 ${isActive ? 'after:w-full' : 'after:w-0 hover:after:w-full'
+                  }`}
               >
                 {label}
               </Link>
