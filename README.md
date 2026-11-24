@@ -92,3 +92,4 @@ All website content and media paths are structured in clean, centralized files:
 | `npm run lint` | `eslint` | Lints all client and server source code |
 | `npm run format` | `prettier --write .` | Formats all files across the repository |
 | `npm run format:check` | `prettier --check .` | Checks formatting across the repository |
+# Blualienbhanuv
